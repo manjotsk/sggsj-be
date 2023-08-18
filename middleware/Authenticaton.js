@@ -5,30 +5,32 @@ require('dotenv').config();
 
 const authenticate = async function (req, res, next) {
     try {
-        let token = req.headers["x-api-key"];
-        // authorization && token
-        if (!token) {
-            res.send({ message: "please login first && please try after sometime" });
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            res.status(401).send({ message: "Please provide a valid Bearer token." });
+            return;
         }
+
+        const token = authHeader.split(" ")[1];
 
         jwt.verify(
             token,
-            process.env.SECRET_KEY, // Fix the typo here
+            process.env.SECRET_KEY,
             function (error, decoded) {
                 if (error) {
-                    res.send({ message: error.message });
+                    res.status(401).send({ message: "Unauthorized. Invalid token." });
                 } else {
-                    tokenCheck = decoded;
-                    req.token = tokenCheck;
+                    req.token = decoded;
                     next();
                 }
             }
         );
     } catch (error) {
         console.log(error);
+        res.status(500).send({ message: "Internal server error." });
     }
 };
-
 const authorization = async (req, res, next) => {
     try {
       idFromToken = tokenCheck.id;
