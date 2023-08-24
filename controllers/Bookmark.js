@@ -44,10 +44,18 @@ const GetBookmark = async (req, res) => {
 };
 const Delete = async (req, res) => {
   try {
-    const Del = await bookmarkmodel.deleteOne(Objectid,  { new: true });
-    res.status(200).json({ message: " Bookmark deleted sucessfully" });
+    const bookmarkId = req.params.id; // Assuming you're passing the bookmark ID in the URL parameter
+    const Del = await bookmarkmodel.deleteOne({ _id: bookmarkId });
+    
+    if (Del.deletedCount === 0) {
+      res.status(404).json({ message: "Bookmark not found" });
+    } else {
+      res.status(200).json({ message: "Bookmark deleted successfully" });
+    }
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ message: "An error occurred" });
   }
 };
+
 module.exports = { CreateBookmark, GetBookmark, Delete };
