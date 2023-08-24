@@ -2,7 +2,7 @@ const bookmarkmodel = require("../models/bookmarkmodel");
 
 const CreateBookmark = async (req, res) => {
   try {
-    const { title, arth } = req.body;
+    const { title, arth, ang } = req.body;
     const Bookdata = await bookmarkmodel.create({ title, arth, ang },  { new: true });
 
     res
