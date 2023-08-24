@@ -3,7 +3,12 @@ const bookmarkmodel = require("../models/bookmarkmodel");
 const CreateBookmark = async (req, res) => {
   try {
     const { title, arth, ang } = req.body;
-    const Bookdata = await bookmarkmodel.create({ title, arth, ang },  { new: true });
+
+    if (!title || !arth || !ang) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const Bookdata = await bookmarkmodel.create({ title, arth, ang });
 
     res
       .status(201)
@@ -12,6 +17,7 @@ const CreateBookmark = async (req, res) => {
     console.log(err);
   }
 };
+
 const GetBookmark = async (req, res) => {
   try {
     const { query } = req;
@@ -43,7 +49,8 @@ const GetBookmark = async (req, res) => {
 };
 const Delete = async (req, res) => {
   try {
-    const bookmarkId = req.params.id; // Assuming you're passing the bookmark ID in the URL parameter
+    const bookmarkId = req.params.id; 
+    console.log("Bookamark",bookmarkId);
     const Del = await bookmarkmodel.deleteOne({ _id: bookmarkId });
     
     if (Del.deletedCount === 0) {

@@ -20,4 +20,4 @@ const Bookmarkmodel = new mongoose.Schema(
 },
 {timestamps: true}
 )
-module.exports = mongoose.model('Arth', Bookmarkmodel)
+module.exports = mongoose.model('arth', Bookmarkmodel)
