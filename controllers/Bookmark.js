@@ -4,7 +4,7 @@ const { Objectid } = require("mongoose").Types;
 const CreateBookmark = async (req, res) => {
   try {
     const { title, arth } = req.body;
-    const Bookdata = await bookmarkmodel.create({ title, arth });
+    const Bookdata = await bookmarkmodel.create({ title, arth, ang },  { new: true });
 
     res
       .status(201)
@@ -34,7 +34,7 @@ const GetBookmark = async (req, res) => {
           createAt: -1,
         },
       },
-    ]);
+    ],  { new: true });
     res
       .status(200)
       .json({ message: "all Bookmarks fetched successfully ", data: Bookdata });
@@ -44,7 +44,7 @@ const GetBookmark = async (req, res) => {
 };
 const Delete = async (req, res) => {
   try {
-    const Del = await bookmarkmodel.deleteOne(Objectid);
+    const Del = await bookmarkmodel.deleteOne(Objectid,  { new: true });
     res.status(200).json({ message: " Bookmark deleted sucessfully" });
   } catch (err) {
     console.log(err);

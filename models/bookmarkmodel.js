@@ -13,6 +13,10 @@ const Bookmarkmodel = new mongoose.Schema(
     required:true,
     trim:true
  },
+ ang:{
+  type: Number,
+  required:true,
+ }
 },
 {timestamps: true}
 )
