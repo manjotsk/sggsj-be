@@ -1,5 +1,4 @@
 const bookmarkmodel = require("../models/bookmarkmodel");
-const { Objectid } = require("mongoose").Types;
 
 const CreateBookmark = async (req, res) => {
   try {
@@ -31,7 +30,7 @@ const GetBookmark = async (req, res) => {
       { $match: searchCeriteria },
       {
         $sort: {
-          createAt: -1,
+          createAt: 1,
         },
       },
     ],  { new: true });
