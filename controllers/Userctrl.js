@@ -50,7 +50,7 @@ const Userlogin = async (req, res) => {
         id: Checkemail._id,
       },
       process.env.SECRET_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "120d" }
     );
     res.status(200).send({ message: "login successfully", token: token });
   } catch (err) {
