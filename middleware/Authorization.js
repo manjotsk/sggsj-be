@@ -6,7 +6,7 @@ const authorization = async (req, res, next) => {
         
         const loginUser = req.params.id;
         console.log(loginUser,"login user");
-        const checkUser = await BookmarkModel.findby({
+        const checkUser = await BookmarkModel.findById({
           _id: new ObjectId(loginUser)
         });
         console.log("check User", checkUser);
