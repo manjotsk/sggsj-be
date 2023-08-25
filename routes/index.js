@@ -15,7 +15,7 @@ router.get("/singleuser/:id", authenticate, authorization, Userctrl.singleUser);
 
 router.post("/bookmark/", authenticate, CreateBookmark);
 router.get("/bookmark/", authenticate, GetBookmark);
-router.delete("/bookmark/:id", authenticate, Bookmark.Delete);
+router.delete("/bookmark/:id", Bookmark.Delete);
 router.get("/hello", (req, res) => res.send("Hello World"));
 
 module.exports = router;
