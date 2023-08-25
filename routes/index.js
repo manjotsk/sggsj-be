@@ -3,7 +3,8 @@ const router = express.Router();
 const Userctrl = require("../controllers/Userctrl");
 const Bookmark = require("../controllers/Bookmark");
 const { CreateBookmark, GetBookmark } = require("../controllers/Bookmark");
-const { authenticate, authorization } = require("../middleware/Authenticaton");
+const { authenticate} = require("../middleware/Authenticaton");
+const { authorization } = require("../middleware/Authorization");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
