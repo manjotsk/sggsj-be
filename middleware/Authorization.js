@@ -1,14 +1,14 @@
-const BookmarkModel = require("../models/bookmarkmodel");
+const userModel = require("../models/Usermodel");
 const { ObjectId } = require("mongoose").Types;
 const authorization = async (req, res, next) => {
     try {
         idFromToken = tokenCheck.id;
-        
+
         const loginUser = req.params.id;
-        console.log(loginUser,"login user");
-        const checkUser = await BookmarkModel.findById({_id: new ObjectId(loginUser)});
+        console.log(loginUser, "login user");
+        const checkUser = await userModel.findOne({ _id: new ObjectId(loginUser) });
         console.log("check User", checkUser);
-    
+
         if (!checkUser) {
             res.status(404).send({ message: "User not found" });
             return;
@@ -24,4 +24,4 @@ const authorization = async (req, res, next) => {
         res.status(400).send({ status: false, message: err.message });
     }
 }
-module.exports = { authorization};
+module.exports = { authorization };
