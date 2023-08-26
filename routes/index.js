@@ -12,7 +12,7 @@ router.get("/", function (req, res, next) {
 });
 router.post("/registration", Userctrl.CreateUser);
 router.post("/login", Userctrl.Userlogin);
-router.get("/singleuser/:id", authenticate, authorization, Userctrl.singleUser);
+router.get("/singleuser/:id", authenticate,  Userctrl.singleUser);
 
 router.post("/bookmark/", authenticate, CreateBookmark);
 router.get("/bookmark/", authenticate, GetBookmark);
