@@ -15,7 +15,7 @@ router.post("/login", Userctrl.Userlogin);
 router.get("/singleuser/:id", authenticate, authorization, Userctrl.singleUser);
 
 router.post("/bookmark/", authenticate, CreateBookmark);
-router.get("/bookmark/", authenticate, GetBookmark);
+router.get("/bookmark/", authenticate, authorization, GetBookmark);
 router.delete("/bookmark/:id", Bookmark.Delete);
 router.get("/hello", (req, res) => res.send("Hello World"));
 
