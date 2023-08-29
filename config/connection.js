@@ -6,7 +6,6 @@ const mongodb = (req, res) => {
   mongoose
     .connect(
       DB_CONNECT,
-      //"mongodb://127.0.0.1:27017/user",
       {
         useNewurlParser: true,
       }
