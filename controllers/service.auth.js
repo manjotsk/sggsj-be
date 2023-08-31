@@ -1,10 +1,7 @@
 const PasswordReset = require("../models/PasswordReset");
 const Usermodel = require("../models/Usermodel");
 
-
-
-
-
+const { resetPasswordTemplate } = require('../tempate/resetPasswordTempate')
 const forgetpassword = async (req, res, next) => {
 
   try {
