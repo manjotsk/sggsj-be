@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Userctrl = require("../controllers/Userctrl");
+const { resetPassword, forgetpassword } = require("../controllers/service.auth");
+const Userctrl = require("../controllers/Userctrl")
 const Bookmark = require("../controllers/Bookmark");
 const { CreateBookmark, GetBookmark } = require("../controllers/Bookmark");
 const { authenticate } = require("../middleware/Authenticaton");
@@ -13,6 +14,9 @@ router.get("/", function (req, res, next) {
 router.post("/registration", Userctrl.CreateUser);
 router.post("/login", Userctrl.Userlogin);
 router.get("/singleuser/:id", authenticate, authorization, Userctrl.singleUser);
+router.post("/edit/:id", authenticate, authorization, Userctrl.UpdateUser)
+router.patch("/forget-password", forgetpassword)
+router.patch("/reset-password", resetPassword)
 
 router.post("/bookmark/", authenticate, CreateBookmark);
 router.get("/bookmark/", authenticate, GetBookmark);

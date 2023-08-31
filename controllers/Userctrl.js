@@ -58,6 +58,27 @@ const Userlogin = async (req, res) => {
     res.status(500).send({ message: "An error occurred during login" });
   }
 };
+const UpdateUser = async (req, res) => {
+  try {
+    const { fullName, address, email, password } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    const Data = await Usermodel.findOneAndUpdate({
+      fullName,
+      address,
+      email,
+      password: hashPassword,
+    });
+    const { password: omit, ...responseData } = Data._doc;
+
+    res
+      .status(201)
+      .send({ message: "user updated successfully", data: responseData });
+  } catch (err) {
+    console.log(err);
+  }
+};
 const singleUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,4 +93,4 @@ const singleUser = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { Userlogin, CreateUser, singleUser };
+module.exports = { Userlogin, CreateUser, UpdateUser, singleUser };
