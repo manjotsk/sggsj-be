@@ -5,13 +5,14 @@ const { ObjectId } = require("mongoose").Types;
 require("dotenv").config();
 const CreateUser = async (req, res) => {
   try {
-    const { fullName, address, email, password } = req.body;
+    const { fullName, address, phone, email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
     const Data = await Usermodel.create({
       fullName,
       address,
+      phone,
       email,
       password: hashPassword,
     });
@@ -50,7 +51,7 @@ const Userlogin = async (req, res) => {
         id: Checkemail._id,
       },
       process.env.SECRET_KEY,
-      { expiresIn: "120d" }
+      { expiresIn: "60 * 120" }
     );
     res.status(200).send({ message: "login successfully", token: token });
   } catch (err) {
@@ -67,6 +68,7 @@ const UpdateUser = async (req, res) => {
     const Data = await Usermodel.findOneAndUpdate({
       fullName,
       address,
+      phone,
       email,
       password: hashPassword,
     });

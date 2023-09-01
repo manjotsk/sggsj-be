@@ -37,7 +37,6 @@ const Usermodel = new mongoose.Schema(
       type: String,
       requird: true,
       trim: true,
-      maxLength: 20,
       minLength: 8,
       description: "must be a string of at least 8 characters, and is required"
     },
