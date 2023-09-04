@@ -9,6 +9,7 @@ const authenticate = async function (req, res, next) {
             res.status(401).send({ message: "Please provide a valid Bearer token." });
             return;
         }
+    console.log(token, "token");
 
         const token = authHeader.split(" ")[1];
         console.log(token);
