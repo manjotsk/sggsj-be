@@ -1,20 +1,32 @@
+
 const bookmarkmodel = require("../models/bookmarkmodel");
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
 
 const CreateBookmark = async (req, res) => {
   try {
-    const { title, arth, ang } = req.body;
+    const { title, arth, userId, ang } = req.body;
 
     if (!title || !arth || !ang) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const Bookdata = await bookmarkmodel.create({ title, arth, ang });
+    // Create a new ObjectId from the userId
+    const validUserId = new mongoose.Types.ObjectId(userId);
+
+    const Bookdata = await bookmarkmodel.create({
+      title,
+      arth,
+      userId: validUserId,
+      ang
+    });
 
     res
       .status(201)
       .send({ message: "bookMark create successfully", data: Bookdata });
   } catch (err) {
     console.log(err);
+    res.status(400).json({ message: "Bad Request" });
   }
 };
 
@@ -39,7 +51,28 @@ const GetBookmark = async (req, res) => {
           createAt: 1,
         },
       },
-    ],  { new: true });
+      {
+        $facet: {
+          data: [
+            {
+              $lookup: {
+                from: "users",
+                localField: "userId",
+                foreignField: "_id",
+                as: "Userdetails",
+              },
+            },
+            {
+              $unwind: {
+                path: "$Userdetails",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+          ],
+          count: [{ $count: "total" }],
+        },
+      },
+    ], { new: true });
     res
       .status(200)
       .json({ message: "all Bookmarks fetched successfully ", data: Bookdata });
@@ -49,10 +82,10 @@ const GetBookmark = async (req, res) => {
 };
 const Delete = async (req, res) => {
   try {
-    const bookmarkId = req.params.id; 
-    console.log("Bookamark",bookmarkId);
+    const bookmarkId = req.params.id;
+    console.log("Bookamark", bookmarkId);
     const Del = await bookmarkmodel.deleteOne({ _id: bookmarkId });
-    
+
     if (Del.deletedCount === 0) {
       res.status(404).json({ message: "Bookmark not found" });
     } else {

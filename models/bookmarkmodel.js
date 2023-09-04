@@ -1,4 +1,4 @@
-const { ObjectId } = require("bson");
+const { ObjectId } = require("mongoose").Types;
 const mongoose = require("mongoose");
 
 const Bookmarkmodel = new mongoose.Schema(
@@ -18,8 +18,9 @@ const Bookmarkmodel = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    auther: {
+    userId: {
       type: ObjectId,
+      required: true,
       ref: "users"
     }
   },

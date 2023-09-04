@@ -84,9 +84,7 @@ const UpdateUser = async (req, res) => {
 const singleUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const UserData = await Usermodel.findById({ _id: new ObjectId(id) });
-    console.log("data", UserData);
     res
       .status(200)
       .json({ message: "single customer details", data: UserData });
