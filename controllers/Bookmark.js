@@ -51,27 +51,6 @@ const GetBookmark = async (req, res) => {
           createAt: 1,
         },
       },
-      {
-        $facet: {
-          data: [
-            {
-              $lookup: {
-                from: "users",
-                localField: "userId",
-                foreignField: "_id",
-                as: "Userdetails",
-              },
-            },
-            {
-              $unwind: {
-                path: "$Userdetails",
-                preserveNullAndEmptyArrays: true,
-              },
-            },
-          ],
-          count: [{ $count: "total" }],
-        },
-      },
     ], { new: true });
     res
       .status(200)
