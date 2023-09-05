@@ -19,7 +19,7 @@ router.patch("/forget-password", forgetpassword)
 router.patch("/reset-password", resetPassword)
 
 router.post("/bookmark/", authenticateToken, CreateBookmark);
-router.get("/bookmark/:id", authenticateToken, authorization, GetBookmark);
+router.get("/bookmark", authenticateToken, GetBookmark);
 router.delete("/bookmark/:id", Bookmark.Delete);
 
 module.exports = router;
