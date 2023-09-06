@@ -18,6 +18,10 @@ const Bookmarkmodel = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    lineno: {
+      type: Number,
+      required: true,
+    },
     userId: {
       type: ObjectId,
       required: true,

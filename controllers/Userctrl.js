@@ -5,22 +5,24 @@ const { ObjectId } = require("mongoose").Types;
 require("dotenv").config();
 const CreateUser = async (req, res) => {
   try {
-    const { fullName, address, phone, email, password } = req.body;
+    const { fullName, address, dateofBirth, phone, email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
+    if (!finduser) {
+      const Data = await Usermodel.create({
+        fullName,
+        address,
+        phone, dateofBirth,
+        email,
+        password: hashPassword,
+      });
+      const { password: omit, ...responseData } = Data._doc;
 
-    const Data = await Usermodel.create({
-      fullName,
-      address,
-      phone,
-      email,
-      password: hashPassword,
-    });
-    const { password: omit, ...responseData } = Data._doc;
-
-    res
-      .status(201)
-      .send({ message: "user create successfully", data: responseData });
+      res.status(201).send({ status: true, message: "user create successfully", data: responseData });
+    }
+    else {
+      res.status(400).send({ status: false, message: "User already exist" })
+    }
   } catch (err) {
     console.log(err);
   }
@@ -29,13 +31,9 @@ const Userlogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email) {
-      res.status(400).send({ message: "please, provide email" });
+    if (!email || !password) {
+      res.status(400).json({ message: "Email and password are required" });
     }
-    if (!password) {
-      res.status(400).send({ message: "Please, provide password" });
-    }
-
     const Checkemail = await Usermodel.findOne({ email: email });
     if (!Checkemail) {
       res.status(404).send({ message: "email is not exist " });
@@ -61,19 +59,19 @@ const Userlogin = async (req, res) => {
 };
 const UpdateUser = async (req, res) => {
   try {
-    const { fullName, address, email, password } = req.body;
+    const { fullName, address, dateofBirth, phone, email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
     const Data = await Usermodel.findOneAndUpdate({
       fullName,
       address,
+      dateofBirth,
       phone,
       email,
       password: hashPassword,
     });
     const { password: omit, ...responseData } = Data._doc;
-
     res
       .status(201)
       .send({ message: "user updated successfully", data: responseData });
@@ -84,7 +82,7 @@ const UpdateUser = async (req, res) => {
 const singleUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const UserData = await Usermodel.findById({ _id: new ObjectId(id) });
+    const UserData = await Usermodel.findById({ _id: new ObjectId(id) }).select('-password');
     res
       .status(200)
       .json({ message: "single customer details", data: UserData });
@@ -93,4 +91,16 @@ const singleUser = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { Userlogin, CreateUser, UpdateUser, singleUser };
+const DeleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const UserData = await Usermodel.findByIdAndDelete({ _id: new ObjectId(id) });
+    res
+      .status(200)
+      .json({ message: "single customer details" });
+  } catch (error) {
+    res.status(404).json({ message: "not found" });
+    console.log(error);
+  }
+};
+module.exports = { Userlogin, CreateUser, UpdateUser, singleUser, DeleteUser };

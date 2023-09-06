@@ -18,8 +18,8 @@ router.post("/edit/:id", authenticateToken, authorization, Userctrl.UpdateUser)
 router.patch("/forget-password", forgetpassword)
 router.patch("/reset-password", resetPassword)
 
-router.post("/bookmark/", authenticateToken, CreateBookmark);
-router.get("/bookmark", authenticateToken, GetBookmark);
+router.post("/bookmark", authenticateToken, CreateBookmark);
+router.get("/bookmark", GetBookmark);
 router.delete("/bookmark/:id", Bookmark.Delete);
 
 module.exports = router;

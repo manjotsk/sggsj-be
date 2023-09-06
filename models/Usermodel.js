@@ -18,6 +18,10 @@ const Usermodel = new mongoose.Schema(
       required: true,
       trim: true
     },
+    dateofBirth: {
+      type: Date,
+      requird: true
+    },
     phone: {
       type: Number,
       required: true,

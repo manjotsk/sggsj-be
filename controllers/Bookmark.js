@@ -5,9 +5,9 @@ const { ObjectId } = mongoose.Types;
 
 const CreateBookmark = async (req, res) => {
   try {
-    const { title, arth, userId, ang } = req.body;
+    const { title, arth, userId, lineno, ang } = req.body;
 
-    if (!title || !arth || !ang) {
+    if (!title || !arth || !ang || !lineno) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -18,7 +18,8 @@ const CreateBookmark = async (req, res) => {
       title,
       arth,
       userId: validUserId,
-      ang
+      ang,
+      lineno
     });
 
     res
@@ -50,6 +51,26 @@ const GetBookmark = async (req, res) => {
         $sort: {
           createAt: 1,
         },
+      }, {
+        $facet: {
+          data: [
+            {
+              $lookup: {
+                from: "user",
+                localField: "userId",
+                foreignField: "_id",
+                as: "UserDetails",
+              },
+            },
+            {
+              $unwind: {
+                path: "$UserDetails",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+          ],
+          count: [{ $count: "total" }],
+        },
       },
     ], { new: true });
     res
@@ -62,7 +83,6 @@ const GetBookmark = async (req, res) => {
 const Delete = async (req, res) => {
   try {
     const bookmarkId = req.params.id;
-    console.log("Bookamark", bookmarkId);
     const Del = await bookmarkmodel.deleteOne({ _id: bookmarkId });
 
     if (Del.deletedCount === 0) {
