@@ -44,6 +44,10 @@ const Usermodel = new mongoose.Schema(
       minLength: 8,
       description: "must be a string of at least 8 characters, and is required"
     },
+    isActive: {
+      type: Boolean,
+      default: true
+    }
   },
 
   { timeStamp: true }
