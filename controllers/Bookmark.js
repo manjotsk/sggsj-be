@@ -1,4 +1,5 @@
-
+ 
+const Usermodel = require("../models/Usermodel");
 const bookmarkmodel = require("../models/bookmarkmodel");
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
@@ -80,6 +81,22 @@ const GetBookmark = async (req, res) => {
     console.log(err);
   }
 };
+
+const getByUserId = async (req, res, next)=>{
+  const userId = req.params.id;
+  let userBookmark
+  try {
+    userBookmark = await Usermodel.findById(userId).populate("arth");
+  } catch (error) {
+    console.log(error);
+  }
+  if(!userBookmark){
+    res.status(404).json({message: "No Bookmark Found"}) 
+  }
+  else{
+    res.status(200).json({message: "bookmark is fetch Successfully"})
+  }
+}
 const Delete = async (req, res) => {
   try {
     const bookmarkId = req.params.id;
@@ -96,4 +113,4 @@ const Delete = async (req, res) => {
   }
 };
 
-module.exports = { CreateBookmark, GetBookmark, Delete };
+module.exports = { CreateBookmark, GetBookmark, getByUserId, Delete };

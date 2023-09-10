@@ -4,7 +4,7 @@ const { resetPassword, forgetpassword } = require("../controllers/service.auth")
 const Userctrl = require("../controllers/Userctrl");
 const Bookmark = require("../controllers/Bookmark");
 const { CreateBookmark, GetBookmark } = require("../controllers/Bookmark");
-const { authenticate, authenticateToken } = require("../middleware/Authenticaton");
+const {authenticateToken } = require("../middleware/Authenticaton");
 const { authorization } = require("../middleware/Authorization");
 
 /* GET home page. */
@@ -20,6 +20,7 @@ router.patch("/reset-password", resetPassword)
 
 router.post("/bookmark", authenticateToken, CreateBookmark);
 router.get("/bookmark", GetBookmark);
+router.get("/bookmark/:id", Bookmark.getByUserId);
 router.delete("/bookmark/:id", Bookmark.Delete);
 
 module.exports = router;

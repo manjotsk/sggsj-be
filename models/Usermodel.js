@@ -47,7 +47,8 @@ const Usermodel = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true
-    }
+    },
+    bookmark:[ ]
   },
 
   { timeStamp: true }

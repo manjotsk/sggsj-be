@@ -25,7 +25,7 @@ const Bookmarkmodel = new mongoose.Schema(
     userId: {
       type: ObjectId,
       required: true,
-      ref: "users"
+      ref: "User"
     }
   },
   { timestamps: true }
