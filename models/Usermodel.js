@@ -19,8 +19,7 @@ const Usermodel = new mongoose.Schema(
       trim: true
     },
     dateofBirth: {
-      type: Date,
-      requird: true
+      type: Date
     },
     phone: {
       type: Number,
@@ -48,7 +47,6 @@ const Usermodel = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    bookmark:[ ]
   },
 
   { timeStamp: true }

@@ -3,10 +3,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongoose").Types;
 require("dotenv").config();
+const mongoose = require ('mongoose')
+
 const CreateUser = async (req, res) => {
-  const GetBookmark = new mongoose.Types.ObjectId(bookmark);
   try {
-    const { fullName, address, dateofBirth, phone, email, password, bookmark } = req.body;
+    const { fullName, address, dateofBirth, phone, email, password, } = req.body;
+    const finduser = await Usermodel.findOne({email:email})
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     if (!finduser) {
@@ -16,7 +18,6 @@ const CreateUser = async (req, res) => {
         phone, dateofBirth,
         email,
         password: hashPassword,
-        bookmark: GetBookmark,
       });
       const { password: omit, ...responseData } = Data._doc;
 

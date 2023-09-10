@@ -86,7 +86,7 @@ const getByUserId = async (req, res, next)=>{
   const userId = req.params.id;
   let userBookmark
   try {
-    userBookmark = await Usermodel.findById(userId).populate("arth");
+    userBookmark = await bookmarkmodel.findById(userId).populate("arth");
   } catch (error) {
     console.log(error);
   }
