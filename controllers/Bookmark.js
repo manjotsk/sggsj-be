@@ -1,4 +1,4 @@
- 
+
 const Usermodel = require("../models/Usermodel");
 const bookmarkmodel = require("../models/bookmarkmodel");
 const mongoose = require("mongoose");
@@ -6,7 +6,7 @@ const { ObjectId } = mongoose.Types;
 
 const CreateBookmark = async (req, res) => {
   try {
-    const { title, arth, userId, lineno, ang } = req.body;
+    const { title, arth, userId, lineno, ang, english, hindi } = req.body;
 
     if (!title || !arth || !ang || !lineno) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -20,7 +20,9 @@ const CreateBookmark = async (req, res) => {
       arth,
       userId: validUserId,
       ang,
-      lineno
+      lineno,
+      hindi,
+      english
     });
 
     res
@@ -82,19 +84,19 @@ const GetBookmark = async (req, res) => {
   }
 };
 
-const getByUserId = async (req, res, next)=>{
+const getByUserId = async (req, res, next) => {
   const userId = req.params.id;
   let userBookmark
   try {
-    userBookmark = await bookmarkmodel.findById(userId).populate("arth");
+    userBookmark = await bookmarkmodel.findById(userId)
   } catch (error) {
     console.log(error);
   }
-  if(!userBookmark){
-    res.status(404).json({message: "No Bookmark Found"}) 
+  if (!userBookmark) {
+    res.status(404).json({ message: "No Bookmark Found" })
   }
-  else{
-    res.status(200).json({message: "bookmark is fetch Successfully"})
+  else {
+    res.status(200).json({ message: "bookmark is fetch Successfully" })
   }
 }
 const Delete = async (req, res) => {
