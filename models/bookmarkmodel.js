@@ -7,7 +7,8 @@ const Bookmarkmodel = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      unique: true
     },
     arth: {
       type: String,
@@ -21,6 +22,14 @@ const Bookmarkmodel = new mongoose.Schema(
     lineno: {
       type: Number,
       required: true,
+    },
+    english: {
+      type: String,
+    },
+    hindi: {
+      type: String,
+      required: true,
+      trim: true
     },
     userId: {
       type: ObjectId,
