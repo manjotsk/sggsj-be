@@ -1,28 +1,20 @@
- 
-const Usermodel = require("../models/Usermodel");
 const bookmarkmodel = require("../models/bookmarkmodel");
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 
 const CreateBookmark = async (req, res) => {
   try {
-    const { title, arth, userId, lineno, ang } = req.body;
-
+    const { title, arth, lineno, ang} = req.body;
     if (!title || !arth || !ang || !lineno) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-
-    // Create a new ObjectId from the userId
-    const validUserId = new mongoose.Types.ObjectId(userId);
-
     const Bookdata = await bookmarkmodel.create({
       title,
       arth,
-      userId: validUserId,
+      userId:req.token.id,
       ang,
       lineno
     });
-
     res
       .status(201)
       .send({ message: "bookMark create successfully", data: Bookdata });
@@ -32,61 +24,11 @@ const CreateBookmark = async (req, res) => {
   }
 };
 
-const GetBookmark = async (req, res) => {
-  try {
-    const { query } = req;
-    const { keyword } = req.query;
-
-    const searchCeriteria = {};
-
-    if (req.query.keyword) {
-      searchCeriteria["$or"] = [
-        { title: { $regex: `^${keyword.trim()}`, $options: "i" } },
-        { arh: { $regex: `${keyword.trim()}`, $options: "i" } },
-      ];
-    }
-
-    const Bookdata = await bookmarkmodel.aggregate([
-      { $match: searchCeriteria },
-      {
-        $sort: {
-          createAt: 1,
-        },
-      }, {
-        $facet: {
-          data: [
-            {
-              $lookup: {
-                from: "user",
-                localField: "userId",
-                foreignField: "_id",
-                as: "UserDetails",
-              },
-            },
-            {
-              $unwind: {
-                path: "$UserDetails",
-                preserveNullAndEmptyArrays: true,
-              },
-            },
-          ],
-          count: [{ $count: "total" }],
-        },
-      },
-    ], { new: true });
-    res
-      .status(200)
-      .json({ message: "all Bookmarks fetched successfully ", data: Bookdata });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getByUserId = async (req, res, next)=>{
+const GetBookmark = async (req, res, next)=>{
   const userId = req.params.id;
   let userBookmark
   try {
-    userBookmark = await bookmarkmodel.findById(userId).populate("arth");
+    userBookmark = await bookmarkmodel.find({userId});
   } catch (error) {
     console.log(error);
   }
@@ -94,7 +36,7 @@ const getByUserId = async (req, res, next)=>{
     res.status(404).json({message: "No Bookmark Found"}) 
   }
   else{
-    res.status(200).json({message: "bookmark is fetch Successfully"})
+    res.status(200).json({message: "bookmark is fetch Successfully", data:userBookmark})
   }
 }
 const Delete = async (req, res) => {
@@ -113,4 +55,4 @@ const Delete = async (req, res) => {
   }
 };
 
-module.exports = { CreateBookmark, GetBookmark, getByUserId, Delete };
+module.exports = { CreateBookmark, GetBookmark, Delete };

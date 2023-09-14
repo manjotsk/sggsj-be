@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongoose").Types;
 require("dotenv").config();
-const mongoose = require ('mongoose')
 
 const CreateUser = async (req, res) => {
   try {
@@ -47,12 +46,11 @@ const Userlogin = async (req, res) => {
       res.status(404).send({ message: "wrong password and try again" });
     }
 
+
     const token = jwt.sign(
-      {
-        id: Checkemail._id,
-      },
+    {id: Checkemail._id},
       process.env.SECRET_KEY,
-      { expiresIn: "24h" }
+      { expiresIn: "7d" }
     );
     res.status(200).send({ message: "login successfully", token: token });
   } catch (err) {
