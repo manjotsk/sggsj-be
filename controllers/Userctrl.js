@@ -80,18 +80,6 @@ const UpdateUser = async (req, res) => {
     console.log(err);
   }
 };
-const singleUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const UserData = await Usermodel.findById({ _id: new ObjectId(id) }).select('-password');
-    res
-      .status(200)
-      .json({ message: "single customer details", data: UserData });
-  } catch (error) {
-    res.status(404).json({ message: "not found" });
-    console.log(error);
-  }
-};
 const DeleteUser = async (req, res) => {
   try {
     const { id } = req.params;

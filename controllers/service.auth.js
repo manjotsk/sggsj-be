@@ -29,8 +29,6 @@ const forgetpassword = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-
-
 }
 const resetPassword = async (req, res, next) => {
 
