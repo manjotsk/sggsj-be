@@ -7,7 +7,7 @@ require("dotenv").config();
 const CreateUser = async (req, res) => {
   try {
     const { fullName, address, dateofBirth, phone, email, password, } = req.body;
-    const finduser = await Usermodel.findOne({email:email})
+    const finduser = await Usermodel.findOne({ email: email })
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     if (!finduser) {
@@ -48,7 +48,7 @@ const Userlogin = async (req, res) => {
 
 
     const token = jwt.sign(
-    {id: Checkemail._id},
+      { id: Checkemail._id },
       process.env.SECRET_KEY,
       { expiresIn: "7d" }
     );
@@ -92,4 +92,4 @@ const DeleteUser = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { Userlogin, CreateUser, UpdateUser, singleUser, DeleteUser };
+module.exports = { Userlogin, CreateUser, UpdateUser, DeleteUser };

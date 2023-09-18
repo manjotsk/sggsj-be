@@ -3,23 +3,28 @@ require('dotenv').config();
 
 const authenticateToken = async function (req, res, next) {
   try {
-    let token = req.headers["x-api-key"];
-    // authorization && token
-    if (!token) {
-      res.send({ message: "please login first && please try after sometime" });
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).send({ message: "Please provide a valid Bearer token." });
+      return;
     }
+    const token = authHeader.split(" ")[1];
+    console.log(token);
 
     let decodedToken = jwt.verify(
       token,
       process.env.SECRET_KEY,
       function (error, decoded) {
         if (error) {
-          res.status(400).send({ message: error.message });
+          return "Token Expired"
         } else {
           tokenCheck = decoded;
         }
-      }
-    );
+      });
+    if (decodedToken === "Token Expired") {
+      res.status(401).send({ status: false, data: "Token expired" })
+    }
     req.token = tokenCheck
     next();
   } catch (error) {
