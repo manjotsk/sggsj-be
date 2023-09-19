@@ -7,7 +7,6 @@ const validateEmail = function (email) {
 
 const Usermodel = new mongoose.Schema(
   {
-
     fullName: {
       type: String,
       required: true,
@@ -18,8 +17,9 @@ const Usermodel = new mongoose.Schema(
       required: true,
       trim: true
     },
-    dateofBirth: {
-      type: Date
+    dob: {
+      type: Date,
+      required: true,
     },
     phone: {
       type: Number,
