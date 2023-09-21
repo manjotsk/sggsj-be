@@ -16,8 +16,8 @@ router.post("/registration", Userctrl.CreateUser);
 router.post("/login", Userctrl.Userlogin);
 router.post("/edit/:id", authenticateToken, authorization, Userctrl.UpdateUser)
 router.get("/profile", authenticateToken, getObjectId)
-router.patch("/forget-password", forgetpassword)
-router.patch("/auth/reset-password", resetPassword)
+// router.patch("/forget-password", forgetpassword)
+// router.patch("/auth/reset-password", resetPassword)
 
 router.post("/bookmark", authenticateToken, CreateBookmark);
 router.get("/bookmark", authenticateToken, GetBookmark);
