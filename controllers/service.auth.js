@@ -1,61 +1,67 @@
 const PasswordReset = require("../models/PasswordReset");
 const Usermodel = require("../models/Usermodel");
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 
-const { resetPasswordTemplate } = require('../tempate/resetPasswordTempate')
+const { resetPasswordTemplate } = require('../tempate/resetPasswordTempate');
+const { sendEmail } = require("../service/sendEmail");
 const forgetpassword = async (req, res, next) => {
-
   try {
-    const { email } = req.body
-    const findUser = await Usermodel.findOne({ email: email });
-    if (!findUser) throw new HttpException(409, `This email ${email} was not found`);
+    const { email } = req.body;
+    const findUser = await Usermodel.findOne({ email });
 
-
-    const checkTokenExistence = await passwordReset.findOne({ primaryEmail: primaryEmail });
-    if (checkTokenExistence) {
-      await this.passwordReset.deleteOne({ email: email });
+    if (!findUser) {
+      return res.status(404).json({ message: `User with email ${email} not found` });
     }
-
-    const token = sign({ userId: findUser._id }, 'resetPassword', { expiresIn: '1h' });
-
-    await this.passwordReset.create({
+    const checkTokenExistence = await PasswordReset.findOne({ email: email });
+    console.log(checkTokenExistence, "email")
+    if (checkTokenExistence) {
+      await PasswordReset.deleteOne({ email: email });
+    }
+    const token = jwt.sign({ userId: findUser._id }, 'resetPassword', { expiresIn: '1h' });
+    console.log("Token", token);
+    await PasswordReset.create({
       userId: findUser._id,
       token,
       email: findUser.email,
       expireAt: new Date(Date.now() + 3600000),
     });
-
-    await sendEmail([email], 'Shri Guru Granth Sahib', resetPasswordTemplate({ resestToken: token }), ['gurwinder.singh@simbaquartz.com']);
-    return res.json({ message: "Token send successfuly", success: true })
+    await sendEmail([email], 'Shri Guru Granth Sahib', resetPasswordTemplate({ resetToken: token }), ['gurwinder.singh@simbaquartz.com']);
+    return res.json({ message: "Token sent successfully", success: true });
   } catch (error) {
-    next(error)
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Error initiating password reset' });
   }
-}
+};
+
 const resetPassword = async (req, res, next) => {
 
   try {
-    const resetToken = req.query.resestToken
+    const resetToken = req.query.token
     const { password, confirmPassword } = req.body
     const validationResult = validatePassword(password);
     if (validationResult !== 'valid') {
-      throw new HttpException(401, `Invalid password ${validationResult}`);
+      throw new Error(`Invalid password ${validationResult}`);
     }
+
     const tokenEntry = await PasswordReset.findOne({ token: resetToken });
-
-    if (!tokenEntry || tokenEntry.expiresAt < new Date()) {
-      throw new HttpException(400, 'Invalid or expired token');
+    if (!tokenEntry) {
+      throw new Error('Token not found');
+    } else if (tokenEntry.expiresAt < new Date()) {
+      throw new Error('Token has expired');
     }
-    const findUser = await Usermodel.findOne({ _id: tokenEntry.userId });
 
+    const findUser = await Usermodel.findOne({ _id: tokenEntry.userId });
     if (!findUser) {
-      throw new HttpException(404, 'User not found');
+      throw new Error('User not found');
     }
     if (password !== confirmPassword) {
-      throw new HttpException(409, 'Password is not matching');
+      throw new Error('Password is not matching');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const updateResult = await UsermodelupdateOne({ _id: findUser._id }, { $set: { password: hashedPassword } });
+    const updateResult = await Usermodel.updateOne({ _id: findUser._id }, { $set: { password: hashedPassword } });
     await PasswordReset.findOneAndDelete({ token: resetToken });
     res.status(200).json({ data: updateResult, message: "Password Reset Successfuly", success: true })
   } catch (error) {
@@ -100,6 +106,5 @@ function validatePassword(password) {
 
   return missingRules.length > 0 ? `Password must contain ${missingRules.join(', ')}` : 'valid';
 }
-
 
 module.exports = { resetPassword, forgetpassword }

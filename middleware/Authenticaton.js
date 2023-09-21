@@ -10,7 +10,6 @@ const authenticateToken = async function (req, res, next) {
       return;
     }
     const token = authHeader.split(" ")[1];
-    console.log(token);
 
     let decodedToken = jwt.verify(
       token,

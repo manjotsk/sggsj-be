@@ -7,8 +7,10 @@ const resetPassword = new Schema({
         required: true,
         ref: 'users',
     },
-    primaryEmail: {
+    email: {
         type: String,
+        required: true,
+        ref: 'users'
     },
     token: {
         type: String,

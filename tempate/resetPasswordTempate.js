@@ -1,6 +1,6 @@
 
-const resetPasswordTemplate = ({ resestToken }) => {
-    return `
+const resetPasswordTemplate = ({ resetToken }) => {
+  return `
   <!DOCTYPE html>
   <html>
     <head>
@@ -12,11 +12,12 @@ const resetPasswordTemplate = ({ resestToken }) => {
       <p>Hello,</p>
       <p>You are receiving this email because a request has been made to reset the password for your account.</p>
       <p>Please click the link below to reset your password:</p>
-      <p><a href=exp://192.168.0.51:19000/auth/set-password?token=${resestToken}>Reset Password</a></p>
+      <p><a href=exp://192.168.0.51:19000/auth/reset-password?token=${resetToken}>Reset Password</a></p>
       <p>If you did not make this request, please ignore this email and your password will remain unchanged.</p>
       <p>Thank you,</p>
-      <p>${resestToken}<p/>
+      <p>${resetToken}<p/>
     </body>
   </html>
   `;
 };
+module.exports = { resetPasswordTemplate };

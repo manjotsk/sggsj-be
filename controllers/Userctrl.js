@@ -6,7 +6,7 @@ require("dotenv").config();
 
 const CreateUser = async (req, res) => {
   try {
-    const { fullName, address, dateofBirth, phone, email, dob, password, } = req.body;
+    const { fullName, address, phone, email, dob, password, } = req.body;
     const finduser = await Usermodel.findOne({ email: email })
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);

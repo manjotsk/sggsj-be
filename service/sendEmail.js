@@ -1,32 +1,28 @@
+const AWS = require('aws-sdk');
+require("dotenv").config();
 
-const {AWS}=require('aws-sdk')
-const {AWS_SES_ACCESS_KEY_ID, AWS_SES_SECRET_ACCESS_KEY,}=require('../config/connection')
+const AWS_SES_ACCESS_KEY_ID = process.env.AWS_SES_ACCESS_KEY_ID;
+const AWS_SES_SECRET_ACCESS_KEY = process.env.AWS_SES_SECRET_ACCESS_KEY
 /**
- * Sends email address
- * @param {Array} recipients
- * @param {String} subject
- * @param {String} template
- * @param {String} ccRecipients
+ * Sends an email
+ * @param {Array} recipients - An array of recipient email addresses
+ * @param {String} subject - The email subject
+ * @param {String} template - The HTML email content
+ * @param {Array} ccRecipients - An array of CC recipient email addresses (optional)
  */
-const sendEmail = (recipients, subject, template, ccRecipients) => {
-  let destinationEmail = [];
-  let ccDestinationEmail = [];
-
-destinationEmail=recipients
-ccDestinationEmail=ccRecipients
-  return new Promise((resolve, reject) => {
+const sendEmail = (recipients, subject, template, ccRecipients = []) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      const SES_CONFIG = {
+      const ses = new AWS.SES({
         accessKeyId: AWS_SES_ACCESS_KEY_ID,
         secretAccessKey: AWS_SES_SECRET_ACCESS_KEY,
         region: 'ap-south-1',
-      };
+      });
 
-      const ses = new AWS.SES(SES_CONFIG);
-      const params= {
+      const params = {
         Destination: {
-          ToAddresses: destinationEmail,
-          CcAddresses: ccDestinationEmail || [],
+          ToAddresses: recipients,
+          CcAddresses: ccRecipients,
         },
         Message: {
           Body: {
@@ -42,13 +38,12 @@ ccDestinationEmail=ccRecipients
         },
         Source: 'gurwinder.singh@simbaquartz.com',
       };
-      const sendEmail = async () => await ses.sendEmail(params).promise();
-      sendEmail();
+
+      await ses.sendEmail(params).promise();
       resolve();
     } catch (error) {
-      return reject(error);
+      reject(error);
     }
   });
 };
-
-export default sendEmail;
+module.exports = { sendEmail };
