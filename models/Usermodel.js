@@ -10,22 +10,21 @@ const Usermodel = new mongoose.Schema(
     fullName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     address: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
+    avtar: { type: String },
     dob: {
-      type: Date,
-      required: true,
+      type: String,
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
       minlength: 10,
-      maxlength: 10,
       unique: true,
     },
     email: {
@@ -34,21 +33,21 @@ const Usermodel = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      lowercase: true
+      lowercase: true,
     },
     password: {
       type: String,
       requird: true,
       trim: true,
       minLength: 8,
-      description: "must be a string of at least 8 characters, and is required"
+      description: "must be a string of at least 8 characters, and is required",
     },
     isActive: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
 
   { timeStamp: true }
-)
-module.exports = mongoose.model("User", Usermodel)
+);
+module.exports = mongoose.model("User", Usermodel);

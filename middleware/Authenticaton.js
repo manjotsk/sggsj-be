@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
+const { SecureKey } = require("../config/keys").secretkey;
 
 const authenticateToken = async function (req, res, next) {
   try {
@@ -11,20 +11,17 @@ const authenticateToken = async function (req, res, next) {
     }
     const token = authHeader.split(" ")[1];
 
-    let decodedToken = jwt.verify(
-      token,
-      process.env.SECRET_KEY,
-      function (error, decoded) {
-        if (error) {
-          return "Token Expired"
-        } else {
-          tokenCheck = decoded;
-        }
-      });
+    let decodedToken = jwt.verify(token, SecureKey, function (error, decoded) {
+      if (error) {
+        return "Token Expired";
+      } else {
+        tokenCheck = decoded;
+      }
+    });
     if (decodedToken === "Token Expired") {
-      res.status(401).send({ status: false, data: "Token expired" })
+      res.status(401).send({ status: false, data: "Token expired" });
     }
-    req.token = tokenCheck
+    req.token = tokenCheck;
     next();
   } catch (error) {
     console.log(error);

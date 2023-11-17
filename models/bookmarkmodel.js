@@ -3,17 +3,22 @@ const mongoose = require("mongoose");
 
 const Bookmarkmodel = new mongoose.Schema(
   {
-
     title: {
       type: String,
       required: true,
       trim: true,
-      unique: true
+      unique: true,
+    },
+    engAkhar: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
     },
     arth: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     ang: {
       type: Number,
@@ -29,14 +34,14 @@ const Bookmarkmodel = new mongoose.Schema(
     hindi: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     userId: {
       type: ObjectId,
       required: true,
-      ref: "User"
-    }
+      ref: "User",
+    },
   },
   { timestamps: true }
-)
-module.exports = mongoose.model('arth', Bookmarkmodel)
+);
+module.exports = mongoose.model("arth", Bookmarkmodel);

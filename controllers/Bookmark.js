@@ -4,18 +4,19 @@ const { ObjectId } = mongoose.Types;
 
 const CreateBookmark = async (req, res) => {
   try {
-    const { title, arth, lineno, ang, hindi, english } = req.body;
+    const { title, engAkhar, arth, lineno, ang, hindi, english } = req.body;
     if (!title || !arth || !ang || !lineno) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const Bookdata = await bookmarkmodel.create({
       title,
+      engAkhar,
       arth,
       userId: req.token.id,
       ang,
       lineno,
       hindi,
-      english
+      english,
     });
     res
       .status(201)
@@ -28,19 +29,20 @@ const CreateBookmark = async (req, res) => {
 
 const GetBookmark = async (req, res, next) => {
   const userId = req.token.id;
-  let userBookmark
+  let userBookmark;
   try {
     userBookmark = await bookmarkmodel.find({ userId });
   } catch (error) {
     console.log(error);
   }
   if (!userBookmark) {
-    res.status(404).json({ message: "No Bookmark Found" })
+    res.status(404).json({ message: "No Bookmark Found" });
+  } else {
+    res
+      .status(200)
+      .json({ message: "bookmark is fetch Successfully", data: userBookmark });
   }
-  else {
-    res.status(200).json({ message: "bookmark is fetch Successfully", data: userBookmark })
-  }
-}
+};
 const Delete = async (req, res) => {
   try {
     const bookmarkId = req.params.id;

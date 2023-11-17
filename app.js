@@ -7,6 +7,8 @@ const connection = require("./config/connection");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJS = require("swagger-jsdoc");
 
 var app = express();
 

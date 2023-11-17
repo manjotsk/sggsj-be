@@ -7,14 +7,14 @@
 var app = require("../app");
 var debug = require("debug")("be:server");
 var http = require("http");
+var { port } = require("../config/keys").host;
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(port || "5000");
 app.set("port", port);
-
 /**
  * Create HTTP server.
  */
