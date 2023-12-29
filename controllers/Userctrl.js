@@ -50,7 +50,7 @@ const Userlogin = async (req, res) => {
     }
 
     const token = jwt.sign({ id: Checkemail._id }, SecureKey, {
-      expiresIn: "10s",
+      expiresIn: "7d",
     });
     res.status(200).send({ message: "login successfully", token: token });
   } catch (err) {

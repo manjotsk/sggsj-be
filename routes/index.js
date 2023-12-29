@@ -8,7 +8,6 @@ const Userctrl = require("../controllers/Userctrl");
 const Bookmark = require("../controllers/Bookmark");
 const { CreateBookmark, GetBookmark } = require("../controllers/Bookmark");
 const { authenticateToken } = require("../middleware/Authenticaton");
-const { authorization } = require("../middleware/Authorization");
 const { getObjectId } = require("../controllers/me.auth");
 
 /* GET home page. */

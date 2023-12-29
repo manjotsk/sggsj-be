@@ -1,6 +1,4 @@
 const bookmarkmodel = require("../models/bookmarkmodel");
-const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Types;
 
 const CreateBookmark = async (req, res) => {
   try {
