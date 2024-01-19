@@ -1,5 +1,5 @@
 import awsServerlessExpress from "aws-serverless-express";
-import app from "./app"; // Import your Express app
+import app from "./app.js"; // Import your Express app
 const server = awsServerlessExpress.createServer(app);
 
 export const handler = async (event, context) => {
