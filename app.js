@@ -1,36 +1,39 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-const connection = require("./config/connection");
-
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-const swaggerUi = require("swagger-ui-express");
-const swaggerJS = require("swagger-jsdoc");
-
+import createError from "http-errors";
+import express from "express";
+import path from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import {mongodb} from "./config/connection.js";
+import indexRouter from "./routes/index.js";
+import usersRouter from "./routes/users.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerJS from "swagger-jsdoc";
 var app = express();
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory path of the current module
+const currentDir = dirname(fileURLToPath(import.meta.url));
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(currentDir, "views"));
 app.set("view engine", "jade");
-
-connection.mongodb();
+const db =await  mongodb();
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-
+app.use(express.static(path.join(currentDir, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -42,5 +45,4 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
-module.exports = app;
+export default app;

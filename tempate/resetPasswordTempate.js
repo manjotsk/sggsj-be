@@ -1,5 +1,6 @@
-
-const resetPasswordTemplate = ({ resetToken }) => {
+const resetPasswordTemplate = ({
+  resetToken
+}) => {
   return `
   <!DOCTYPE html>
   <html>
@@ -20,4 +21,6 @@ const resetPasswordTemplate = ({ resetToken }) => {
   </html>
   `;
 };
-module.exports = { resetPasswordTemplate };
+export  {
+  resetPasswordTemplate
+};

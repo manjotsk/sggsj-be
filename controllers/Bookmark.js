@@ -1,4 +1,4 @@
-const bookmarkmodel = require("../models/bookmarkmodel");
+import bookmarkmodel from "../models/bookmarkmodel.js";
 
 const CreateBookmark = async (req, res) => {
   try {
@@ -18,9 +18,9 @@ const CreateBookmark = async (req, res) => {
     });
     res
       .status(201)
-      .send({ message: "bookMark create successfully", data: Bookdata });
+      .send({ message: "bookMark created successfully", data: Bookdata });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(400).json({ message: "Bad Request" });
   }
 };
@@ -31,16 +31,17 @@ const GetBookmark = async (req, res, next) => {
   try {
     userBookmark = await bookmarkmodel.find({ userId });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   if (!userBookmark) {
     res.status(404).json({ message: "No Bookmark Found" });
   } else {
     res
       .status(200)
-      .json({ message: "bookmark is fetch Successfully", data: userBookmark });
+      .json({ message: "bookmark is fetched Successfully", data: userBookmark });
   }
 };
+
 const Delete = async (req, res) => {
   try {
     const bookmarkId = req.params.id;
@@ -57,4 +58,4 @@ const Delete = async (req, res) => {
   }
 };
 
-module.exports = { CreateBookmark, GetBookmark, Delete };
+export { CreateBookmark, GetBookmark, Delete };

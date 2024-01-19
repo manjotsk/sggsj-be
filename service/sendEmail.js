@@ -1,8 +1,9 @@
-const AWS = require('aws-sdk');
-require("dotenv").config();
+import AWS from "aws-sdk";
+import dotenv from 'dotenv';
 
+dotenv.config();
 const AWS_SES_ACCESS_KEY_ID = process.env.AWS_SES_ACCESS_KEY_ID;
-const AWS_SES_SECRET_ACCESS_KEY = process.env.AWS_SES_SECRET_ACCESS_KEY
+const AWS_SES_SECRET_ACCESS_KEY = process.env.AWS_SES_SECRET_ACCESS_KEY;
 /**
  * Sends an email
  * @param {Array} recipients - An array of recipient email addresses
@@ -16,29 +17,27 @@ const sendEmail = (recipients, subject, template, ccRecipients = []) => {
       const ses = new AWS.SES({
         accessKeyId: AWS_SES_ACCESS_KEY_ID,
         secretAccessKey: AWS_SES_SECRET_ACCESS_KEY,
-        region: 'ap-south-1',
+        region: 'ap-south-1'
       });
-
       const params = {
         Destination: {
           ToAddresses: recipients,
-          CcAddresses: ccRecipients,
+          CcAddresses: ccRecipients
         },
         Message: {
           Body: {
             Html: {
               Charset: 'UTF-8',
-              Data: template,
-            },
+              Data: template
+            }
           },
           Subject: {
             Charset: 'UTF-8',
-            Data: subject,
-          },
+            Data: subject
+          }
         },
-        Source: 'gurwinder.singh@simbaquartz.com',
+        Source: 'gurwinder.singh@simbaquartz.com'
       };
-
       await ses.sendEmail(params).promise();
       resolve();
     } catch (error) {
@@ -46,4 +45,6 @@ const sendEmail = (recipients, subject, template, ccRecipients = []) => {
     }
   });
 };
-module.exports = { sendEmail };
+export  {
+  sendEmail
+};

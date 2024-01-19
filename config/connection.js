@@ -1,14 +1,15 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const { DB_CONNECT } = require("./keys").host;
+import keys from "../config/keys.js";
 
+
+const { DB_CONNECT } = keys.host;
 const mongodb = (req, res) => {
-  mongoose
-    .connect(DB_CONNECT, {
-      useNewUrlParser: true,
-    })
-    .then(() => console.log("MongoDB is connected"))
-    .catch((err) => console.error("MongoDB connection error:", err));
+  const db = mongoose.connect(DB_CONNECT, {
+    useNewUrlParser: true
+  }).then(() => {console.log("MongoDB is connected"); mongoose.set('debug',true)}).catch(err => console.error("MongoDB connection error:", err));
 };
 
-module.exports = { mongodb };
+export  {
+  mongodb
+};

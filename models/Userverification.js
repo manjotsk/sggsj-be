@@ -1,18 +1,19 @@
-const mongoose = require('mongoose')
-const { Schema, } = require('mongoose');
-
+import mongoose from "mongoose";
+import { Schema } from "mongoose";
 const verification = new Schema({
-    userId: {
-        type: String,
-        required: true,
-        ref: 'users',
-    },
-    uniqueString: {
-        type: String,
-    },
-    createdAt: {
-        type: Date,
-    },
-    expireAt: { type: Date },
+  userId: {
+    type: String,
+    required: true,
+    ref: 'users'
+  },
+  uniqueString: {
+    type: String
+  },
+  createdAt: {
+    type: Date
+  },
+  expireAt: {
+    type: Date
+  }
 });
-module.exports = mongoose.model("emailVeification", verification)
+export default mongoose.model("emailVeification", verification);
