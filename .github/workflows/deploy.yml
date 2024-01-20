@@ -12,6 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Add Env Variables
+        run: |
+          touch .env
+          echo PROD_ENV="${{ secrets.PROD_ENV }}" >> .env
+
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
