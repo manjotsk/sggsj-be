@@ -17,7 +17,7 @@ async function searchKosh(queries) {
 
 async function searchKoshController (req, res) {
   console.log("jdfdwefe");
-  const queries = ['ਉਸ','ਧੁਰਾਹੂ']; // Get the queries parameter as an array from the request
+  const queries = req.query.words || []; // Get the queries parameter as an array from the request
   try {
     const results = await searchKosh(queries);
     res.json(results);
