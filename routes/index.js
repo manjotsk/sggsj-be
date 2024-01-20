@@ -21,5 +21,5 @@ router.patch("/auth/reset-password", resetPassword);
 router.post("/bookmark", authenticateToken, CreateBookmark);
 router.get("/bookmark", authenticateToken, GetBookmark);
 router.delete("/bookmark/:id", Delete);
-router.get("/guru-kosh", searchKoshController);
+router.post("/guru-kosh", searchKoshController);
 export default router;
