@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 import { Types } from 'mongoose';
 
 const { ObjectId } = Types;
+import keys from '../config/keys.js';
+
+
+const { SecureKey } = keys.secretkey;
 
 const CreateUser = async (req, res) => {
   try {

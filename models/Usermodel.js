@@ -22,8 +22,7 @@ const Usermodel = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true,
-    minlength: 10,
+    required: false,
     unique: true
   },
   email: {

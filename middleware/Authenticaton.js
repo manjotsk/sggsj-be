@@ -6,6 +6,7 @@ const { SecureKey } = keys.secretkey;
 
 const authenticateToken = async function (req, res, next) {
   try {
+    let tokenCheck
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       res.status(401).send({
