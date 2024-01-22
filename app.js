@@ -16,7 +16,7 @@ import { fileURLToPath } from 'url';
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
 let corsOptions = { 
-  origin : ['http://localhost:8000','https://a3bwpwpus2.execute-api.ap-south-1.amazonaws.com'], 
+  origin : ['http://localhost:8000','https://sikhi-connect.web.app'], 
 } 
 
  
