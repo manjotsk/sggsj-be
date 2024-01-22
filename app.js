@@ -6,7 +6,7 @@ import logger from "morgan";
 import {mongodb} from "./config/connection.js";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
-import swaggerUi from "swagger-ui-express";
+import cors from "cors";
 import swaggerJS from "swagger-jsdoc";
 var app = express();
 import { dirname } from 'path';
@@ -15,6 +15,12 @@ import { fileURLToPath } from 'url';
 // Get the directory path of the current module
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
+let corsOptions = { 
+  origin : ['http://localhost:8000','https://a3bwpwpus2.execute-api.ap-south-1.amazonaws.com'], 
+} 
+
+ 
+app.use(cors(corsOptions)) 
 // view engine setup
 app.set("views", path.join(currentDir, "views"));
 app.set("view engine", "jade");
