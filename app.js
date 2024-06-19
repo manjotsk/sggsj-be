@@ -7,7 +7,6 @@ import {mongodb} from "./config/connection.js";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 import cors from "cors";
-import swaggerJS from "swagger-jsdoc";
 var app = express();
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
